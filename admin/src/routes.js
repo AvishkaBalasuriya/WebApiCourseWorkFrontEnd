@@ -6,8 +6,18 @@ window.$ = $;
 global.jQuery = $;
 
 const DashboardDefault = React.lazy(() => import("./Demo/Dashboard/Default"));
-const ShopHome = React.lazy(() => import('./component/ShopHome'));
-const Profile =  React.lazy(() => import('./component/Profile'));
+const Register = React.lazy(() => import("./component/Admin/Register"));
+
+const MainCategory = React.lazy(() =>
+  import("./component/Category/MainCategory")
+);
+const SubCategory = React.lazy(() =>
+  import("./component/Category/SubCategory")
+);
+const Items = React.lazy(() => import("./component/Item/Items"));
+
+const Vender = React.lazy(() => import("./component/Vender/Vender"));
+const Order = React.lazy(() => import("./component/Transactions/Order"));
 
 const routes = [
   {
@@ -17,16 +27,40 @@ const routes = [
     component: DashboardDefault,
   },
   {
-    path: "/shop",
+    path: "/Register",
     exact: true,
-    name: "shop",
-    component: ShopHome,
+    name: "User Registration",
+    component: Register,
   },
   {
-    path: "/profile",
+    path: "/main-category",
     exact: true,
-    name: "Profile",
-    component: Profile,
+    name: "Main Category",
+    component: MainCategory,
+  },
+  {
+    path: "/sub-category",
+    exact: true,
+    name: "Sub Category",
+    component: SubCategory,
+  },
+  {
+    path: "/item",
+    exact: true,
+    name: "Item",
+    component: Items,
+  },
+  {
+    path: "/vender",
+    exact: true,
+    name: "Vender",
+    component: Vender,
+  },
+  {
+    path: "/order",
+    exact: true,
+    name: "Order List",
+    component: Order,
   },
 ];
 

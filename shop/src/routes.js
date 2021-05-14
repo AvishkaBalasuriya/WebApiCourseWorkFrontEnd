@@ -6,12 +6,14 @@ window.$ = $;
 global.jQuery = $;
 
 const DashboardDefault = React.lazy(() => import("./Demo/Dashboard/Default"));
-const ShopHome = React.lazy(() => import('./component/ShopHome'));
-const Profile =  React.lazy(() => import('./component/Profile'));
+const ShopHome = React.lazy(() => import("./component/ShopHome"));
+const Profile = React.lazy(() => import("./component/Profile"));
+const CheckList = React.lazy(() => import("./component/CheckList/CheckList"));
+const Order = React.lazy(() => import("./component/Transactions/Order"));
 
 const routes = [
   {
-    path: "/forms/home/dashboard",
+    path: "/",
     exact: true,
     name: "Default",
     component: DashboardDefault,
@@ -28,6 +30,19 @@ const routes = [
     name: "Profile",
     component: Profile,
   },
+  {
+    path: "/check-list",
+    exact: true,
+    name: "Check List",
+    component: CheckList,
+  },
+  {
+    path: "/order",
+    exact: true,
+    name: "Order List",
+    component: Order,
+  },
+
 ];
 
 export default routes;
