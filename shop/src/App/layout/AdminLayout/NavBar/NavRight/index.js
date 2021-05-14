@@ -22,15 +22,31 @@ class NavRight extends Component {
     localStorage.setItem("user", null);
     alert(localStorage.getItem("user"));
   }
-
+  componentDidMount() {
+    console.log("this.props", this.props);
+  }
   render() {
     return (
       <Aux>
         <ul className="navbar-nav ml-auto">
           <li>
+            {this.props.login.user.length != 0 ? (
+              <a href="/order">
+                <i className="icon feather icon-list" /> 
+              </a>
+            ) : (
+              <div></div>
+            )}
+          </li>
+          <li>
             <Dropdown alignRight={!this.props.rtlLayout}>
               <Dropdown.Toggle variant={"link"} id="dropdown-basic">
-                <i className="icon feather icon-shopping-cart" />
+                <div>
+                  {this.props.login.cart != null
+                    ? this.props.login.cart.length
+                    : 0}
+                  <i className="icon feather icon-shopping-cart" />
+                </div>
               </Dropdown.Toggle>
               <Dropdown.Menu alignRight className="notification">
                 <div className="noti-head">
@@ -43,72 +59,31 @@ class NavRight extends Component {
                   </div>
                 </div>
                 <ul className="noti-body">
-                  <li className="n-title">
-                    {/* <p className="m-b-0">NEW</p> */}
-                  </li>
-                  <li className="notification">
-                    {/* <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar1}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>Exam Result</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            15 min
-                          </span>
-                        </p>
-                        <p>Midterm exam results released</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="n-title">
-                    <p className="m-b-0">EARLIER</p>
-                  </li>
-                  <li className="notification">
-                    <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar2}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>New Semester</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            30 min
-                          </span>
-                        </p>
-                        <p>Apply your next Semester</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="notification">
-                    <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar3}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>Event</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            50 min
-                          </span>
-                        </p>
-                        <p>Annual Convocation Ceremony</p>
-                      </div>
-                    </div> */}
-                  </li>
+                  {this.props.login.cart != null ? (
+                    this.props.login.cart.map((item) => (
+                      <li className="notification">
+                        <div className="media">
+                          <img className="img-radius" src={item.image} alt="" />
+                          <div className="media-body">
+                            <p>
+                              <strong>{item.name}</strong>
+                              <span className="n-time text-muted">
+                                <i className="icon feather icon-clock m-r-10" />
+                                30 min
+                              </span>
+                            </p>
+                            <p>Price :{item.price}</p>
+                            <p>Qty :{item.qty}</p>
+                          </div>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <div></div>
+                  )}
                 </ul>
                 <div className="noti-footer">
-                  <a href={DEMO.BLANK_LINK}>Check Out</a>
+                  <a href="/check-list">Check Out</a>
                 </div>
               </Dropdown.Menu>
             </Dropdown>
@@ -136,9 +111,14 @@ class NavRight extends Component {
                     className="img-radius"
                     alt="User Profile"
                   />
-                  <span>{this.props.login.user.UserName}</span>
+                  <span>
+                    {this.props.login.user.length != 0
+                      ? this.props.login.user.data.accessToken.email
+                      : "Login/Signup"}
+                  </span>
                   <a
-                    href={DEMO.BLANK_LINK}
+                    style={{ color: "red" }}
+                    href="/login"
                     className="dud-logout"
                     title="Logout"
                     onClick={() => this.props.loggout()}

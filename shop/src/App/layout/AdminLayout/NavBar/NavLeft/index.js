@@ -28,12 +28,8 @@ class NavLeft extends Component {
       <Aux>
         <ul className="navbar-nav mr-auto">
           <li>
-            <a
-              href={DEMO.BLANK_LINK}
-              className="full-screen"
-              onClick={this.props.onFullScreen}
-            >
-              <i className={iconFullScreen.join(" ")} />
+            <a href="/" className="full-screen">
+              <i className="feather icon-home" />
             </a>
           </li>
           <li className={navItemClass.join(" ")}>
@@ -88,6 +84,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(windowSize(NavLeft));
-
 
 //Edit By Lasitha
