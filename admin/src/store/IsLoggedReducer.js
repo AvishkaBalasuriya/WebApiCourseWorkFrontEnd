@@ -5,11 +5,12 @@ export const initialState = {
   user: [],
   error: "",
   logginStatus: false,
+  logginStatusCode: "",
 };
 
 const loggedReducer = (state = initialState, action) => {
   let user = [];
-  console.log("action.type", action.type);
+  console.log("action.type ---------------", action);
   switch (action.type) {
     case actionTypes.USER_REQUEST_TO_LOGGIN:
       console.log("action.type", "USER_REQUEST_TO_LOGGIN");
@@ -35,8 +36,17 @@ const loggedReducer = (state = initialState, action) => {
         logginStatus: false,
       };
 
+    case actionTypes.OTP_VERIFICATION:
+      return {
+        loading: false,
+        user: action.payLoad,
+        logginStatusCode: action.logginUserCode,
+        error: "",
+        logginStatus: false,
+      };
+
     default:
-      if (JSON.parse(localStorage.getItem("user")) != null) {
+      if (localStorage.getItem("accessToken") != "null") {
         console.log("userd1");
         console.log("action.type", "Default");
         return {
@@ -52,7 +62,7 @@ const loggedReducer = (state = initialState, action) => {
           loading: false,
           user: [],
           error: action.payLoad,
-          logginStatus: true,
+          logginStatus: false,
         };
       }
   }
