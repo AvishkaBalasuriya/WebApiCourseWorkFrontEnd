@@ -127,6 +127,14 @@
         right: -8%;
     }
 }
+
+#list {
+  display: block;
+  max-width: 400px;
+  margin: auto;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
 /* Pre-loader css end */
 /* header css start */
 .pcoded-header {
@@ -139,8 +147,9 @@
     top: 0;
     background: transparent;
     color: $header-light-text-color;
-    width: calc(100% - #{$Menu-width});
-    margin-left: $Menu-width;
+    width: 100%;
+    //margin-left: $Menu-width;
+    
     transition: all 0.3s ease-in-out;
 
     .m-header {
