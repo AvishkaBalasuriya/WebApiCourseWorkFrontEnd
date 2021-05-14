@@ -136,7 +136,11 @@ class NavRight extends Component {
                     className="img-radius"
                     alt="User Profile"
                   />
-                  <span>{this.props.login.user.UserName}</span>
+                  <span>
+                    {this.props.login.user != null
+                      ? this.props.login.user.data.accessToken.email
+                      : "Login/Signup"}
+                  </span>
                   <a
                     href={DEMO.BLANK_LINK}
                     className="dud-logout"
