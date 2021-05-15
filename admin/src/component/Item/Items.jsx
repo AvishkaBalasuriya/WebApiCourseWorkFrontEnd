@@ -457,12 +457,10 @@ class Items extends Component {
                 multiple: true,
                 uploadMode: "useForm",
                 allowCanceling: true,
-                allowedFileExtensions: [".jpg", ".jpeg", ".gif", ".png"],
+
                 onValueChanged: this.onValueChanged,
               }}
-            >
-            
-            </Item>
+            ></Item>
           </Form>
 
           {/* <div className="main-block">
