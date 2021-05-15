@@ -229,7 +229,7 @@ class MainCategory extends Component {
         Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
         "Content-Type": "application/json",
       },
-  
+      data: data,
     };
 
     this.serverRequest = axios(config)

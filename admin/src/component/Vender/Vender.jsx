@@ -99,7 +99,6 @@ class Vender extends Component {
   OnListClickEvent = () => {
     this.setState({ ListViewing: !this.state.ListViewing }, () => {});
   };
-
   onInitNewRow = (e) => {
     Swal.fire({
       type: "info",
@@ -158,7 +157,6 @@ class Vender extends Component {
   onValueChanged = (e) => {
     this.setState({ File: e.value });
   };
-
   renderGridCell(cellData) {
     console.log("celldate", cellData.value);
     return (

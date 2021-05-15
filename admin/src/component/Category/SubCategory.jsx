@@ -105,7 +105,6 @@ class SubCategory extends Component {
   OnListClickEvent = () => {
     this.setState({ ListViewing: !this.state.ListViewing }, () => {});
   };
-
   onInitNewRow = (e) => {
     Swal.fire({
       type: "info",
@@ -172,6 +171,7 @@ class SubCategory extends Component {
         Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
         "Content-Type": "application/json",
       },
+      data: data,
     };
 
     this.serverRequest = axios(config)

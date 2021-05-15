@@ -2,7 +2,7 @@
   "name": "datta-able-rv18.0.4",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://127.0.0.1:2086",
+  "homepage": "http://127.0.0.1:2086/admin/",
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.5.3",
