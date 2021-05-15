@@ -19,17 +19,19 @@ import DataGrid, {
   Paging,
   Selection,
   SearchPanel,
+  Form as MyForm,
 } from "devextreme-react/data-grid";
+import FileUploader from "devextreme-react/file-uploader";
 
-class MainCategory extends Component {
+class Vender extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      MasterCategoryID: 0,
-      jMasterCategory: [],
-      LoadPanelVisible: false,
-      ListViewing: false,
+      Vender: 0,
+      jVender: {},
+      jFormData: {},
+      File: {},
     };
 
     this.FormRef = React.createRef();
@@ -38,7 +40,7 @@ class MainCategory extends Component {
   componentDidMount() {
     var config = {
       method: "get",
-      url: `${APIURl.URL}category`,
+      url: `${APIURl.URL}vendor`,
       headers: {
         Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
         "Content-Type": "application/json",
@@ -48,7 +50,7 @@ class MainCategory extends Component {
     this.serverRequest = axios(config)
       .then((response) => {
         if (response.data.success) {
-          this.setState({ jMasterCategory: response.data.data });
+          this.setState({ jVender: response.data.data });
         } else {
           this.onLoadPanelHiding(
             response.data.error == null
@@ -57,9 +59,6 @@ class MainCategory extends Component {
             "error"
           );
         }
-
-        console.log("-----------------------", this.state);
-        //this.OnListClickEvent();
       })
       .catch((error) => {
         this.onLoadPanelHiding("Error", "error");
@@ -71,80 +70,12 @@ class MainCategory extends Component {
     return this.FormRef.current.instance;
   }
 
-  OnClickSave = () => {
-    if (this.FormLayout.validate().isValid == true) {
-      Swal.fire({
-        type: "info",
-        showCancelButton: true,
-        text: "Do you want to save ?",
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      }).then((res) => {
-        if (res.value) {
-          this.setState({ LoadPanelVisible: true });
-
-          var data = JSON.stringify({
-            email: this.state.jRegistration.email,
-            password: this.state.jRegistration.password,
-            passwordConfirm: this.state.jRegistration.passwordConfirm,
-            firstName: this.state.jRegistration.firstName,
-            lastName: this.state.jRegistration.lastName,
-            mobileNumber: this.state.jRegistration.mobileNumber,
-            address: this.state.jRegistration.address,
-            isSocial: false,
-          });
-
-          console.log("adasdasd", data);
-          var config = {
-            method: "post",
-            url: `${APIURl.URL}auth/register/admin`,
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("accessToken") + "",
-              "Content-Type": "application/json",
-            },
-            data: data,
-          };
-
-          this.serverRequest = axios(config)
-            .then((response) => {
-              if (response.data.success) {
-                this.onLoadPanelHiding(response.data.message, "success");
-                this.componentDidMount();
-                this.OnClearForm();
-              } else {
-                this.onLoadPanelHiding(
-                  response.data.error == null
-                    ? response.data.message
-                    : response.data.error,
-                  "error"
-                );
-              }
-              //this.OnListClickEvent();
-            })
-            .catch((error) => {
-              this.onLoadPanelHiding("Error", "error");
-              console.log(error);
-            });
-        } else if (res.dismiss == "cancel") {
-        } else if (res.dismiss == "esc") {
-        }
-      });
-    } else {
-      notify({
-        message: "Fields marked with * are required",
-        type: "error",
-        displayTime: 3000,
-        position: { at: "top right", offset: "50" },
-      });
-    }
-  };
-
   OnClearForm = () => {
     this.setState({
-      jRegistration: {},
+      Vender: 0,
+      jVender: {},
+      jFormData: {},
+      File: {},
     });
   };
 
@@ -161,9 +92,14 @@ class MainCategory extends Component {
     });
   };
 
+  setFileName(rowData, value) {
+    rowData.profileImage = this.state.File.Name;
+  }
+
   OnListClickEvent = () => {
     this.setState({ ListViewing: !this.state.ListViewing }, () => {});
   };
+
   onInitNewRow = (e) => {
     Swal.fire({
       type: "info",
@@ -177,18 +113,121 @@ class MainCategory extends Component {
       if (res.value) {
         this.setState({ LoadPanelVisible: true });
 
-        var data = JSON.stringify({
-          name: e.data.name,
-        });
+        console.log("File name", e);
+        var data = new FormData();
+        data.append("name", e.data.name);
+        data.append("country", e.data.country);
+        data.append("logo", this.state.File[0]);
 
+        console.log("adasdasd", data);
         var config = {
           method: "post",
-          url: `${APIURl.URL}category/masterCategory`,
+          url: `${APIURl.URL}vendor`,
           headers: {
             Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
             "Content-Type": "application/json",
           },
           data: data,
+        };
+
+        this.serverRequest = axios(config)
+          .then((response) => {
+            if (response.data.success) {
+              this.onLoadPanelHiding(response.data.message, "success");
+              this.componentDidMount();
+              this.OnClearForm();
+            } else {
+              this.onLoadPanelHiding(
+                response.data.error == null
+                  ? response.data.message
+                  : response.data.error,
+                "error"
+              );
+            }
+          })
+          .catch((error) => {
+            this.onLoadPanelHiding("Error", "error");
+            console.log(error);
+          });
+      } else if (res.dismiss == "cancel") {
+      } else if (res.dismiss == "esc") {
+      }
+    });
+  };
+
+  onValueChanged = (e) => {
+    this.setState({ File: e.value });
+  };
+
+  renderGridCell(cellData) {
+    console.log("celldate", cellData.value);
+    return (
+      <div>
+        <img
+          style={{ width: "100px", height: "100px" }}
+          src={cellData.value}
+        ></img>
+      </div>
+    );
+  }
+
+  onRowRemoved = (e) => {
+    this.setState({ LoadPanelVisible: true });
+
+    var data = JSON.stringify({
+      masterCategoryId: e.key,
+    });
+
+    var config = {
+      method: "delete",
+      url: `${APIURl.URL}vendor/${e.key}`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    this.serverRequest = axios(config)
+      .then((response) => {
+        if (response.data.success) {
+          this.onLoadPanelHiding(response.data.message, "success");
+        } else {
+          this.onLoadPanelHiding(
+            response.data.error == null
+              ? response.data.message
+              : response.data.error,
+            "error"
+          );
+        }
+        this.componentDidMount();
+      })
+      .catch((error) => {
+        this.onLoadPanelHiding("Error", "error");
+        console.log(error);
+      });
+  };
+
+  OnClickDelete = () => {
+    Swal.fire({
+      type: "info",
+      showCancelButton: true,
+      text: "Do you want to delete all ?",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((res) => {
+      if (res.value) {
+        this.setState({ LoadPanelVisible: true });
+
+        var config = {
+          method: "delete",
+          url: `${APIURl.URL}vendor`,
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
+            "Content-Type": "application/json",
+          },
         };
 
         this.serverRequest = axios(config)
@@ -214,51 +253,14 @@ class MainCategory extends Component {
     });
   };
 
-  onRowRemoved = (e) => {
-    this.setState({ LoadPanelVisible: true });
-
-    console.log("daat", e);
-    var data = JSON.stringify({
-      masterCategoryId: e.key,
-    });
-
-    var config = {
-      method: "delete",
-      url: `${APIURl.URL}category/masterCategory/${e.key}`,
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
-        "Content-Type": "application/json",
-      },
-  
-    };
-
-    this.serverRequest = axios(config)
-      .then((response) => {
-        if (response.data.success) {
-          this.onLoadPanelHiding(response.data.message, "success");
-        } else {
-          this.onLoadPanelHiding(
-            response.data.error == null
-              ? response.data.message
-              : response.data.error,
-            "error"
-          );
-        }
-      })
-      .catch((error) => {
-        this.onLoadPanelHiding("Error", "error");
-        console.log(error);
-      });
-  };
-
   render() {
     return (
       <Aux>
-        <Card title="Master Category">
+        <Card title="Vender">
           <DataGrid
             id="grid-subject"
             ref={this.GridRef}
-            dataSource={this.state.jMasterCategory}
+            dataSource={this.state.jVender}
             keyExpr="_id"
             showBorders={true}
             allowSearch={true}
@@ -266,17 +268,46 @@ class MainCategory extends Component {
             onRowRemoved={this.onRowRemoved}
           >
             <Editing
-              mode="popup"
+              mode="form"
               useIcons={true}
               allowDeleting={true}
               allowAdding={true}
             >
-              <Popup title="Add Main Category" showTitle={true}></Popup>
+              <MyForm colCount={2} formData={this.state.jFormData}>
+                <Item dataField="country"></Item>
+                <Item dataField="name"></Item>
+                <Item dataField="profileImage">
+                  <FileUploader
+                    selectButtonText="Upload Image"
+                    uploadMode="useForm"
+                    allowCanceling={true}
+                    allowedFileExtensions={[".jpg", ".jpeg", ".gif", ".png"]}
+                    onValueChanged={this.onValueChanged}
+                  />
+                </Item>
+              </MyForm>
             </Editing>
-            <Column dataField="name" caption="Main Category">
+            <Column dataField="country" caption="Country" groupIndex={0} />
+            <Column dataField="name" caption="Name">
               <RequiredRule />
             </Column>
+            <Column
+              defaultVisible={false}
+              dataField="profileImage"
+              setCellValue={this.setFileName}
+            ></Column>
+            <Column dataField="logo" cellRender={this.renderGridCell} />
           </DataGrid>
+
+          <Navbar bg="" variant="light">
+            <Button
+              variant="danger"
+              icon="feather icon-layers"
+              onClick={this.OnClickDelete}
+            >
+              Delete All
+            </Button>
+          </Navbar>
         </Card>
 
         <LoadPanel
@@ -295,4 +326,4 @@ class MainCategory extends Component {
   }
 }
 
-export default MainCategory;
+export default Vender;

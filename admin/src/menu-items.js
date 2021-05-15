@@ -51,10 +51,43 @@ export default {
           id: "item-master",
           title: "Item",
           type: "item",
-          icon: "feather icon-grid",
+          icon: "feather icon-edit",
           url: "/item",
           DocumentName: "Masters",
-        
+        },
+        {
+          id: "vender-master",
+          title: "Vender",
+          type: "item",
+          icon: "feather icon-user-plus",
+          url: "/vender",
+          DocumentName: "Masters",
+        },
+      ],
+    },
+
+    {
+      id: "group-transactions",
+      title: "Transactions",
+      type: "group",
+      icon: "feather icon-truck",
+      DocumentName: "Dashboard",
+      children: [
+        {
+          id: "transactions",
+          title: "Orders",
+          type: "collapse",
+          icon: "feather icon-list",
+          DocumentName: "transactions",
+          children: [
+            {
+              id: "order",
+              title: "Order",
+              type: "item",
+              url: "/order",
+              DocumentName: "order",
+            },
+          ],
         },
       ],
     },

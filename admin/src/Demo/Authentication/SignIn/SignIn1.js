@@ -55,13 +55,12 @@ class SignUp1 extends Component {
                       <div className="timer-wrapper mb-4">
                         <CountdownCircleTimer
                           isPlaying
-                          duration={10}
+                          duration={1600}
                           colors={[
                             ["#004777", 0.33],
                             ["#F7B801", 0.33],
                             ["#A30000"],
                           ]}
-                          onComplete={() => [true, 1000]}
                         >
                           {renderTime}
                         </CountdownCircleTimer>

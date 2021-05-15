@@ -27,92 +27,7 @@ class NavRight extends Component {
     return (
       <Aux>
         <ul className="navbar-nav ml-auto">
-          <li>
-            <Dropdown alignRight={!this.props.rtlLayout}>
-              <Dropdown.Toggle variant={"link"} id="dropdown-basic">
-                <i className="icon feather icon-shopping-cart" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu alignRight className="notification">
-                <div className="noti-head">
-                  <h6 className="d-inline-block m-b-0">Shoping Cart</h6>
-                  <div className="float-right">
-                    <a href={DEMO.BLANK_LINK} className="m-r-10">
-                      mark as read
-                    </a>
-                    <a href={DEMO.BLANK_LINK}>clear all</a>
-                  </div>
-                </div>
-                <ul className="noti-body">
-                  <li className="n-title">
-                    {/* <p className="m-b-0">NEW</p> */}
-                  </li>
-                  <li className="notification">
-                    {/* <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar1}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>Exam Result</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            15 min
-                          </span>
-                        </p>
-                        <p>Midterm exam results released</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="n-title">
-                    <p className="m-b-0">EARLIER</p>
-                  </li>
-                  <li className="notification">
-                    <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar2}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>New Semester</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            30 min
-                          </span>
-                        </p>
-                        <p>Apply your next Semester</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="notification">
-                    <div className="media">
-                      <img
-                        className="img-radius"
-                        src={Avatar3}
-                        alt="Generic placeholder"
-                      />
-                      <div className="media-body">
-                        <p>
-                          <strong>Event</strong>
-                          <span className="n-time text-muted">
-                            <i className="icon feather icon-clock m-r-10" />
-                            50 min
-                          </span>
-                        </p>
-                        <p>Annual Convocation Ceremony</p>
-                      </div>
-                    </div> */}
-                  </li>
-                </ul>
-                <div className="noti-footer">
-                  <a href={DEMO.BLANK_LINK}>Check Out</a>
-                </div>
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
+          <li></li>
           {/* <li className={this.props.rtlLayout ? "m-r-15" : "m-l-15"}>
             <a
               href={DEMO.BLANK_LINK}
@@ -136,7 +51,11 @@ class NavRight extends Component {
                     className="img-radius"
                     alt="User Profile"
                   />
-                  <span>{this.props.login.user.UserName}</span>
+                  <span>
+                    {this.props.login.user != null
+                      ? this.props.login.user.data.accessToken.email
+                      : "Login/Signup"}
+                  </span>
                   <a
                     href={DEMO.BLANK_LINK}
                     className="dud-logout"

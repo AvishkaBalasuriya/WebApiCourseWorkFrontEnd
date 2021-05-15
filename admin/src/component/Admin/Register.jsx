@@ -54,6 +54,7 @@ class Register extends Component {
             mobileNumber: this.state.jRegistration.mobileNumber,
             address: this.state.jRegistration.address,
             isSocial: false,
+            countryCode: "LK",
           });
 
           console.log("adasdasd", data);

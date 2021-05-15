@@ -14,9 +14,10 @@ const MainCategory = React.lazy(() =>
 const SubCategory = React.lazy(() =>
   import("./component/Category/SubCategory")
 );
-const Items = React.lazy(() =>
-  import("./component/Item/Items")
-);
+const Items = React.lazy(() => import("./component/Item/Items"));
+
+const Vender = React.lazy(() => import("./component/Vender/Vender"));
+const Order = React.lazy(() => import("./component/Transactions/Order"));
 
 const routes = [
   {
@@ -42,11 +43,24 @@ const routes = [
     exact: true,
     name: "Sub Category",
     component: SubCategory,
-  }, {
+  },
+  {
     path: "/item",
     exact: true,
     name: "Item",
     component: Items,
+  },
+  {
+    path: "/vender",
+    exact: true,
+    name: "Vender",
+    component: Vender,
+  },
+  {
+    path: "/order",
+    exact: true,
+    name: "Order List",
+    component: Order,
   },
 ];
 

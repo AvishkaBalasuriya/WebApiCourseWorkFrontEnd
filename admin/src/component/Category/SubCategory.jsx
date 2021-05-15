@@ -83,77 +83,6 @@ class SubCategory extends Component {
     return this.FormRef.current.instance;
   }
 
-  OnClickSave = () => {
-    if (this.FormLayout.validate().isValid == true) {
-      Swal.fire({
-        type: "info",
-        showCancelButton: true,
-        text: "Do you want to save ?",
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      }).then((res) => {
-        if (res.value) {
-          this.setState({ LoadPanelVisible: true });
-
-          var data = JSON.stringify({
-            email: this.state.jRegistration.email,
-            password: this.state.jRegistration.password,
-            passwordConfirm: this.state.jRegistration.passwordConfirm,
-            firstName: this.state.jRegistration.firstName,
-            lastName: this.state.jRegistration.lastName,
-            mobileNumber: this.state.jRegistration.mobileNumber,
-            address: this.state.jRegistration.address,
-            isSocial: false,
-          });
-
-          console.log("adasdasd", data);
-          var config = {
-            method: "post",
-            url: `${APIURl.URL}auth/register/admin`,
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("accessToken") + "",
-              "Content-Type": "application/json",
-            },
-            data: data,
-          };
-
-          this.serverRequest = axios(config)
-            .then((response) => {
-              if (response.data.success) {
-                this.onLoadPanelHiding(response.data.message, "success");
-                this.componentDidMount()
-                this.OnClearForm();
-              } else {
-                this.onLoadPanelHiding(
-                  response.data.error == null
-                    ? response.data.message
-                    : response.data.error,
-                  "error"
-                );
-              }
-              //this.OnListClickEvent();
-            })
-            .catch((error) => {
-              this.onLoadPanelHiding("Error", "error");
-              console.log(error);
-            });
-        } else if (res.dismiss == "cancel") {
-        } else if (res.dismiss == "esc") {
-        }
-      });
-    } else {
-      notify({
-        message: "Fields marked with * are required",
-        type: "error",
-        displayTime: 3000,
-        position: { at: "top right", offset: "50" },
-      });
-    }
-  };
-
   OnClearForm = () => {
     this.setState({
       jRegistration: {},
@@ -176,6 +105,7 @@ class SubCategory extends Component {
   OnListClickEvent = () => {
     this.setState({ ListViewing: !this.state.ListViewing }, () => {});
   };
+
   onInitNewRow = (e) => {
     Swal.fire({
       type: "info",
@@ -196,7 +126,7 @@ class SubCategory extends Component {
 
         var config = {
           method: "post",
-          url: `${APIURl.URL}category/add/subCategory`,
+          url: `${APIURl.URL}category/subCategory`,
           headers: {
             Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
             "Content-Type": "application/json",
@@ -227,6 +157,42 @@ class SubCategory extends Component {
     });
   };
 
+  onRowRemoved = (e) => {
+    this.setState({ LoadPanelVisible: true });
+
+    console.log("daat", e);
+    var data = JSON.stringify({
+      subCategoryId: e.key,
+    });
+
+    var config = {
+      method: "delete",
+      url: `${APIURl.URL}category/subCategory/${e.key}`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
+        "Content-Type": "application/json",
+      },
+    };
+
+    this.serverRequest = axios(config)
+      .then((response) => {
+        if (response.data.success) {
+          this.onLoadPanelHiding(response.data.message, "success");
+        } else {
+          this.onLoadPanelHiding(
+            response.data.error == null
+              ? response.data.message
+              : response.data.error,
+            "error"
+          );
+        }
+      })
+      .catch((error) => {
+        this.onLoadPanelHiding("Error", "error");
+        console.log(error);
+      });
+  };
+
   render() {
     return (
       <Aux>
@@ -239,6 +205,7 @@ class SubCategory extends Component {
             showBorders={true}
             allowSearch={true}
             onRowInserting={this.onInitNewRow}
+            onRowRemoved={this.onRowRemoved}
           >
             <Editing
               mode="popup"
@@ -248,7 +215,11 @@ class SubCategory extends Component {
             >
               <Popup title="Add Main Category" showTitle={true}></Popup>
             </Editing>
-            <Column dataField="masterCategoryId" caption="Main Category" groupIndex={0}>
+            <Column
+              dataField="masterCategoryId"
+              caption="Main Category"
+              groupIndex={0}
+            >
               <Lookup
                 dataSource={this.state.jMasterCategory}
                 valueExpr="_id"

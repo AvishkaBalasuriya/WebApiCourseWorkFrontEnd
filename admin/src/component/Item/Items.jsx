@@ -11,22 +11,38 @@ import notify from "devextreme/ui/notify";
 import APIURl from "../../APIConfig";
 import FileUploader from "devextreme-react/file-uploader";
 import ProgressBar from "devextreme-react/progress-bar";
-import OTPEmail from "../../DataLists/OTPEmail";
-var fs = require("fs");
-
+import List from "../../DataLists/ItemList";
+import Gallery from "devextreme-react/gallery";
+import DataGrid, {
+  Column,
+  Editing,
+  MasterDetail,
+  Popup,
+  Lookup,
+  Scrolling,
+  Paging,
+  Selection,
+  SearchPanel,
+  Summary,
+  TotalItem,
+} from "devextreme-react/data-grid";
 class Items extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      UserID: 0,
+      ItemID: 0,
       jItems: {},
+      jlItem: [],
       LoadPanelVisible: false,
       ListViewing: false,
       jMasterCategory: [],
       jSubCategory: [],
       jVender: [],
       File: [],
+      jlImageView: [],
+      jlImageId: [],
+      jlRemovedImage: [],
     };
 
     this.FormRef = React.createRef();
@@ -131,48 +147,50 @@ class Items extends Component {
           data.append("discount", this.state.jItems.discount);
           data.append("isAvailable", this.state.jItems.isAvailable);
           data.append("status", this.state.jItems.status);
-          data.append(
-            "images",
-            fs.createReadStream(
-              "/Users/avishkabalasuriya/Downloads/vendor_default.png"
-            )
-          );
-          data.append(
-            "images",
-            fs.createReadStream(
-              "/Users/avishkabalasuriya/Downloads/product_default.jpeg"
-            )
-          );
-          data.append(
-            "images",
-            fs.createReadStream(
-              "/Users/avishkabalasuriya/Downloads/515CBCE833E34FE39BE1C78D6C740115 (1).jpg"
-            )
-          );
-          data.append(
-            "images",
-            fs.createReadStream(
-              "/Users/avishkabalasuriya/Downloads/515CBCE833E34FE39BE1C78D6C740115 (2).jpg"
-            )
-          );
 
-          console.log("adasdasd", data);
-          var config = {
-            method: "post",
-            url: `${APIURl.URL}products/add`,
-            headers: {
-              Authorization:
-                "Bearer " + localStorage.getItem("accessToken") + "",
-              "Content-Type": "application/json",
-            },
-            data: data,
-          };
+          if (this.state.File.length != 0) {
+            this.state.File.forEach((element) => {
+              data.append("images", element);
+            });
+          } else {
+            data.append("images", []);
+          }
+
+          if (this.state.ItemID == 0) {
+            var config = {
+              method: "post",
+              url: `${APIURl.URL}product`,
+              headers: {
+                Authorization:
+                  "Bearer " + localStorage.getItem("accessToken") + "",
+                "Content-Type": "application/json",
+              },
+              data: data,
+            };
+          } else {
+            console.log("deleteimages", this.state.jlRemovedImage);
+            data.append("productId", this.state.jItems.productId);
+            data.append(
+              "deletedImages",
+              JSON.stringify(this.state.jlRemovedImage)
+            );
+            var config = {
+              method: "put",
+              url: `${APIURl.URL}product`,
+              headers: {
+                Authorization:
+                  "Bearer " + localStorage.getItem("accessToken") + "",
+                "Content-Type": "application/json",
+              },
+              data: data,
+            };
+          }
 
           this.serverRequest = axios(config)
             .then((response) => {
               if (response.data.success) {
                 this.onLoadPanelHiding(response.data.message, "success");
-
+                this.componentDidMount();
                 this.OnClearForm();
               } else {
                 this.onLoadPanelHiding(
@@ -182,7 +200,6 @@ class Items extends Component {
                   "error"
                 );
               }
-              //this.OnListClickEvent();
             })
             .catch((error) => {
               this.onLoadPanelHiding("Error", "error");
@@ -203,9 +220,22 @@ class Items extends Component {
   };
 
   OnClearForm = () => {
+    console.log("clear");
     this.setState({
+      ItemID: 0,
       jItems: {},
+      jlItem: [],
+      LoadPanelVisible: false,
+      ListViewing: false,
+      jMasterCategory: [],
+      jSubCategory: [],
+      jVender: [],
+      File: [],
+      jlImageView: [],
+      jlImageId: [],
+      jlRemovedImage: [],
     });
+    this.componentDidMount();
   };
 
   onLoadPanelHiding = (message, type) => {
@@ -226,8 +256,103 @@ class Items extends Component {
   };
 
   onValueChanged = (e) => {
-    this.setState({ File: e.value[0] });
-    console.log("++++++++++",this.stategit)
+    this.setState({ File: e.value });
+    console.log("++++++++++", this.state);
+  };
+
+  OnListClickEvent = (SelectID) => {
+    console.log("+++++++++", SelectID);
+    this.setState({ ListViewing: !this.state.ListViewing }, () => {
+      if (this.state.ListViewing) {
+        //Open
+
+        var config = {
+          method: "get",
+          url: `${APIURl.URL}product`,
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
+            "Content-Type": "application/json",
+          },
+        };
+
+        this.serverRequest = axios(config)
+          .then((response) => {
+            if (response.data.success) {
+              this.setState({ jlItem: response.data.data });
+              console.log("-----------------------", this.state);
+            } else {
+              this.onLoadPanelHiding(
+                response.data.error == null
+                  ? response.data.message
+                  : response.data.error,
+                "error"
+              );
+            }
+          })
+          .catch((error) => {
+            this.onLoadPanelHiding("Error", "error");
+            console.log(error);
+          });
+      }
+      if (!this.state.ListViewing && SelectID != 0) {
+        //Close
+        this.setState({ ItemID: SelectID }, () => this.OnLoadData());
+      }
+    });
+  };
+
+  renderGridCell(cellData) {
+    console.log("celldate", cellData.value);
+    return (
+      <div>
+        <img
+          style={{ width: "100px", height: "100px", padding: "10px" }}
+          src={cellData.value}
+        ></img>
+      </div>
+    );
+  }
+
+  OnLoadData() {
+    let filterDate = [];
+    let filterImage = [];
+    let filterImageID = [];
+    this.state.jlItem.map((value) => {
+      if (value._id == this.state.ItemID) {
+        filterDate.push({
+          vendorId: value.vendor,
+          masterCategoryId: value.masterCategory,
+          subCategoryId: value.subCategory,
+          name: value.name,
+          description: value.description,
+          price: value.price,
+          discount: value.discount,
+          isAvailable: value.isAvailable,
+          status: value.status,
+          productId: value._id,
+        });
+
+        console.log("value.images", this.state.jlItem);
+        for (const val of value.images) {
+          console.log(val);
+          filterImage.push(val.imageUrl);
+          filterImageID.push(val);
+        }
+      }
+    });
+
+    console.log("filterDate", filterDate);
+    console.log("filterDate", filterImageID);
+
+    this.setState({
+      jItems: filterDate[0],
+      jlImageView: filterImage,
+      jlImageId: filterImageID,
+    });
+  }
+
+  onRowRemoved = (e) => {
+    this.state.jlRemovedImage.push(e.key);
   };
 
   render() {
@@ -296,7 +421,7 @@ class Items extends Component {
 
             <Item
               dataField="price"
-              dataType="number"
+              editorType="dxNumberBox"
               editorOptions={{
                 maxLength: 50,
                 format: "#,##0.00",
@@ -308,7 +433,7 @@ class Items extends Component {
 
             <Item
               dataField="discount"
-              dataType="number"
+              editorType="dxNumberBox"
               editorOptions={{
                 maxLength: 50,
                 format: "#,##0.00",
@@ -324,14 +449,28 @@ class Items extends Component {
             <Item dataField="status" editorType="dxCheckBox">
               <Label text="Published" />
             </Item>
+
+            <Item
+              dataField="FileUpload"
+              editorType="dxFileUploader"
+              editorOptions={{
+                multiple: true,
+                uploadMode: "useForm",
+                allowCanceling: true,
+                allowedFileExtensions: [".jpg", ".jpeg", ".gif", ".png"],
+                onValueChanged: this.onValueChanged,
+              }}
+            >
+            
+            </Item>
           </Form>
 
-          <div className="main-block">
+          {/* <div className="main-block">
             <div className="file-uploader-block">
               <FileUploader
                 multiple={true}
-                uploadMode="useButtons"
-                uploadUrl="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+                uploadMode="useForm"
+                allowCanceling={true}
                 allowedFileExtensions={[".jpg", ".jpeg", ".gif", ".png"]}
                 onValueChanged={this.onValueChanged}
               />
@@ -340,6 +479,33 @@ class Items extends Component {
                 <span>.jpg, .jpeg, .gif, .png</span>.
               </span>
             </div>
+          </div> */}
+
+          <DataGrid
+            id="grid-subject"
+            ref={this.GridRef}
+            dataSource={this.state.jlImageId}
+            keyExpr="_id"
+            showBorders={true}
+            allowSearch={true}
+            onRowRemoved={this.onRowRemoved}
+          >
+            <Editing mode="popup" useIcons={true} allowDeleting={true}>
+              <Popup title="Add Main Category" showTitle={true}></Popup>
+            </Editing>
+            <Column dataField="imageUrl" cellRender={this.renderGridCell} />
+          </DataGrid>
+
+          <div className="widget-container">
+            <Gallery
+              id="gallery"
+              dataSource={this.state.jlImageView}
+              height={300}
+              slideshowDelay={true ? 2000 : 0}
+              loop={true}
+              showNavButtons={true}
+              showIndicator={true}
+            />
           </div>
 
           <Navbar bg="" variant="light">
@@ -350,11 +516,19 @@ class Items extends Component {
             >
               Save
             </Button>
-            <Button variant="warning" icon="feather icon-layers">
+            <Button
+              variant="warning"
+              icon="feather icon-layers"
+              onClick={this.OnClearForm}
+            >
               Clear
             </Button>
 
-            <Button variant="primary" icon="feather icon-layers">
+            <Button
+              variant="primary"
+              icon="feather icon-layers"
+              onClick={this.OnListClickEvent}
+            >
               View List
             </Button>
           </Navbar>
@@ -372,11 +546,11 @@ class Items extends Component {
           width={500}
         />
 
-        <OTPEmail
+        <List
           Show={this.state.ListViewing}
           OnHide={this.OnListClickEvent}
-          User={this.state.jlRegister}
-        ></OTPEmail>
+          ItemList={this.state.jlItem}
+        ></List>
       </Aux>
     );
   }

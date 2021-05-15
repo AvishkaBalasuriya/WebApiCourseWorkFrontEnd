@@ -13,7 +13,7 @@ export default {
           type: "item",
           status: "Home",
           icon: "feather icon-home",
-          url: "/forms/home/dashboard",
+          url: "/",
           DocumentName: "Dashboard",
         },
       ],
@@ -32,7 +32,7 @@ export default {
           type: "collapse",
           status: "NotCategory",
           icon: "feather icon-grid",
-          url: "/forms/home/dashboard?category=0",
+          url: "/",
           DocumentName: "Masters",
           children: [
             {
@@ -40,7 +40,7 @@ export default {
               title: "Sub 1",
               type: "item",
               status: "category",
-              url: "/forms/home/dashboard?category=1",
+              url: "/?category=1",
               DocumentName: "Student",
             },
             {
@@ -48,7 +48,7 @@ export default {
               title: "Sub 2",
               type: "item",
               status: "category",
-              url: "/forms/home/dashboard?category=2",
+              url: "/?category=2",
               DocumentName: "People",
             },
           ],
