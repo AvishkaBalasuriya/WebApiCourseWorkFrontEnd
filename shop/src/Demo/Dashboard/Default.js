@@ -191,7 +191,7 @@ class Dashboard extends Component {
         "Content-Type": "application/json",
       },
     };
-    
+
     this.serverRequest = axios(config)
       .then((response) => {
         if (response.data.success) {
@@ -363,8 +363,6 @@ class Dashboard extends Component {
                   className="input-group"
                   style={{ padding: "10px", marginBottom: "10px" }}
                 >
-                <div className="input-group" style={{ padding: "10px", marginBottom:"10px"}}>
-                <div className="input-group">
                   <input
                     type="text"
                     id="msearch"
@@ -402,8 +400,6 @@ class Dashboard extends Component {
                         <Carousel.Item
                           style={{ width: "18rem", height: "20rem" }}
                         >
-                        <Carousel.Item style={{ width: "18rem", height: "20rem" }}>
-                        <Carousel.Item>
                           <img
                             className="d-block w-100 h-100"
                             src={items.imageUrl}

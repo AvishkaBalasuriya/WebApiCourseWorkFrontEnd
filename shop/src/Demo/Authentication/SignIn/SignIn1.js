@@ -61,11 +61,7 @@ class SignUp1 extends Component {
                             ["#F7B801", 0.33],
                             ["#A30000"],
                           ]}
-<<<<<<< HEAD
                           
-=======
-                          onComplete={() => [true, 1000]}
->>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
                         >
                           {renderTime}
                         </CountdownCircleTimer>
@@ -181,20 +177,12 @@ class SignUp1 extends Component {
           </Aux>
         );
       } else {
-<<<<<<< HEAD
         return <Redirect to={"/"} />;
-=======
-        return <Redirect to={"/forms/home/dashboard"} />;
->>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
       }
     }
   }
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
 const renderTime = ({ remainingTime }) => {
   return (
     <div className="timer">
