@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Button, Carousel, Modal } from "react-bootstrap";
+import { Row, Col, Card, Button, Carousel, Modal,Badge } from "react-bootstrap";
 import Aux from "../../hoc/_Aux";
 import axios from "axios";
 import NVD3Chart from "react-nvd3";
@@ -359,7 +359,10 @@ class Dashboard extends Component {
             <Row>
               <Col md={4} xl={4}></Col>
               <Col md={4} xl={4}>
-                <div className="input-group" style={{ padding: "10px", marginBottom:"10px"}}>
+                <div
+                  className="input-group"
+                  style={{ padding: "10px", marginBottom: "10px" }}
+                >
                   <input
                     type="text"
                     id="msearch"
@@ -391,10 +394,12 @@ class Dashboard extends Component {
             <Row>
               {this.state.jlItem.map((item) => (
                 <Col md={3} xl={3}>
-                  <Card style={{ width: "18rem", height: "20rem" }}>
+                  <Card style={{ width: "18rem" }}>
                     <Carousel onClick={() => this.OnListClickEvent(item)}>
                       {item.images.map((items) => (
-                        <Carousel.Item style={{ width: "18rem", height: "20rem" }}>
+                        <Carousel.Item
+                          style={{ width: "18rem", height: "20rem" }}
+                        >
                           <img
                             className="d-block w-100 h-100"
                             src={items.imageUrl}
@@ -408,8 +413,10 @@ class Dashboard extends Component {
                       <Card.Title>{item.name}</Card.Title>
                       <Card.Text>Price: {item.price}</Card.Text>
                       {item.discount != 0 ? (
-                        <Card.Text style={{ backgroundColor: "yellow" }}>
-                          Discount: {item.discount}
+                        <Card.Text>
+                          <Badge pill variant="danger">
+                            Discount: {item.discount}
+                          </Badge>
                         </Card.Text>
                       ) : (
                         <div></div>

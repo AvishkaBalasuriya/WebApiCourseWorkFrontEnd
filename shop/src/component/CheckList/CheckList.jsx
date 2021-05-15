@@ -62,10 +62,8 @@ class CheckList extends Component {
       allowEscapeKey: false,
     }).then((res) => {
       if (res.value) {
-        console.log(
-          " this.props.data.user.data",
-          this.props.data.user.length == 0
-        );
+     
+        
         if (this.props.data.user.length != 0) {
           if (this.props.data.user.data.accessToken != null) {
             this.setState({
@@ -74,6 +72,7 @@ class CheckList extends Component {
             let productCart = [];
             let total = 0;
             let discount = 0;
+
             this.state.jlCheckList.map((item) => {
               productCart.push({
                 productId: item._id,
