@@ -182,6 +182,7 @@ class Dashboard extends Component {
         this.onLoadPanelHiding("Error", "error");
         console.log(error);
       });
+<<<<<<< HEAD
 
     var config = {
       method: "get",
@@ -192,6 +193,18 @@ class Dashboard extends Component {
       },
     };
 
+=======
+
+    var config = {
+      method: "get",
+      url: `${APIURl.URL}product`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken") + "",
+        "Content-Type": "application/json",
+      },
+    };
+
+>>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
     this.serverRequest = axios(config)
       .then((response) => {
         if (response.data.success) {
@@ -238,6 +251,7 @@ class Dashboard extends Component {
 
   OnClickSubCategory = (category) => {
     console.log("category", category);
+<<<<<<< HEAD
 
     this.setState({
       LoadPanelVisible: true,
@@ -268,6 +282,8 @@ class Dashboard extends Component {
         });
         console.log(error);
       });
+=======
+>>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
   };
   render() {
     console.log(this.state.jlCategory.length);
@@ -359,7 +375,11 @@ class Dashboard extends Component {
             <Row>
               <Col md={4} xl={4}></Col>
               <Col md={4} xl={4}>
+<<<<<<< HEAD
                 <div className="input-group" style={{ padding: "10px", marginBottom:"10px"}}>
+=======
+                <div className="input-group">
+>>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
                   <input
                     type="text"
                     id="msearch"
@@ -382,11 +402,14 @@ class Dashboard extends Component {
             <Row>
               <Col md={4} xl={4}></Col>
               <Col md={4} xl={4}></Col>
+<<<<<<< HEAD
               <Col md={4} xl={4}></Col>
             </Row>
             <Row>
               <Col md={4} xl={4}></Col>
               <Col md={4} xl={4}></Col>
+=======
+>>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
             </Row>
             <Row>
               {this.state.jlItem.map((item) => (
@@ -394,7 +417,11 @@ class Dashboard extends Component {
                   <Card style={{ width: "18rem", height: "20rem" }}>
                     <Carousel onClick={() => this.OnListClickEvent(item)}>
                       {item.images.map((items) => (
+<<<<<<< HEAD
                         <Carousel.Item style={{ width: "18rem", height: "20rem" }}>
+=======
+                        <Carousel.Item>
+>>>>>>> 08c39f659fadf1714c84fc6f39ffa19a914fa856
                           <img
                             className="d-block w-100 h-100"
                             src={items.imageUrl}
