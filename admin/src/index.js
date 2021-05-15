@@ -13,12 +13,15 @@ import "devextreme/dist/css/dx.light.css";
 import { applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 
+
 const composeEnhancers = composeWithDevTools({});
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
+
+
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename="/admin">
       <App />
     </BrowserRouter>
   </Provider>

@@ -44,11 +44,11 @@ class App extends Component {
           <Suspense fallback={<Loader />}>
             <Switch>
               {menu}
-              {!this.props.data.logginStatus ? (
+              {/* {!this.props.data.logginStatus ? (
                 <Redirect to={"/"} />
-              ) : (
-                <Route path="/" component={AdminLayout} />
-              )}
+              ) : ( */}
+              <Route path="/" component={AdminLayout} />
+              {/* )} */}
             </Switch>
           </Suspense>
         </ScrollToTop>

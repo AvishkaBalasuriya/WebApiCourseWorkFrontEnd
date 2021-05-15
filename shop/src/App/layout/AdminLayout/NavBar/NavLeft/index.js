@@ -28,43 +28,16 @@ class NavLeft extends Component {
       <Aux>
         <ul className="navbar-nav mr-auto">
           <li>
-            <a
-              href={DEMO.BLANK_LINK}
-              className="full-screen"
-              onClick={this.props.onFullScreen}
-            >
-              <i className={iconFullScreen.join(" ")} />
+            <a href="/" className="full-screen">
+              <i className="feather icon-home" />
             </a>
           </li>
           <li className={navItemClass.join(" ")}>
-            <Dropdown alignRight={dropdownRightAlign}>
-              <Dropdown.Toggle variant={"link"} id="dropdown-basic">
-                Language
-              </Dropdown.Toggle>
-              <ul>
-                <Dropdown.Menu>
-                  <li>
-                    <a className="dropdown-item" href={DEMO.BLANK_LINK}>
-                      English
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href={DEMO.BLANK_LINK}>
-                      සිංහල
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href={DEMO.BLANK_LINK}>
-                      தமிழ்
-                    </a>
-                  </li>
-                </Dropdown.Menu>
-              </ul>
-            </Dropdown>
+            <a href="/" className="full-screen">
+              Home
+            </a>
           </li>
-          <li className="nav-item">
-            <NavSearch />
-          </li>
+          <li className="nav-item"></li>
         </ul>
       </Aux>
     );
@@ -88,6 +61,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(windowSize(NavLeft));
-
 
 //Edit By Lasitha
